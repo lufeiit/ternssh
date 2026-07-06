@@ -1,0 +1,40 @@
+{
+  "$schema": "./server/node_modules/wrangler/config-schema.json",
+  "name": "ternssh",
+  "main": "server/src/index.ts",
+  "compatibility_date": "2026-01-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "keep_vars": true,
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "ternssh",
+      "database_id": "e293687f-585d-49f9-95c5-2312ab0e4d06",
+      "migrations_dir": "server/migrations"
+    }
+  ],
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "SSH_SESSION",
+        "class_name": "SshSession"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["SshSession"]
+    }
+  ],
+  "assets": {
+    "directory": "./server/public",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": true
+  }
+}

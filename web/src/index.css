@@ -1,0 +1,362 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-primary: oklch(0.72 0.14 165);
+  --color-primary-foreground: oklch(0.985 0 0);
+  --color-ring: oklch(0.72 0.14 165);
+  --app-min-width: 1280px;
+  --grid-margin-x: 12px;
+  --grid-margin-y: 12px;
+  --workspace-header-height: 48px;
+  --workspace-header-margin-bottom: var(--grid-margin-y);
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --color-background: oklch(0.145 0 0);
+  --color-foreground: oklch(0.985 0 0);
+  --color-card: oklch(0.18 0 0);
+  --color-card-foreground: oklch(0.985 0 0);
+  --color-primary: oklch(0.72 0.14 165);
+  --color-primary-foreground: oklch(0.15 0 0);
+  --color-secondary: oklch(0.25 0 0);
+  --color-secondary-foreground: oklch(0.985 0 0);
+  --color-muted: oklch(0.25 0 0);
+  --color-muted-foreground: oklch(0.7 0 0);
+  --color-border: oklch(0.3 0 0);
+  --color-input: oklch(0.3 0 0);
+  --color-ring: oklch(0.72 0.14 165);
+  --widget-drag-shadow: rgb(0 0 0 / 35%);
+  --color-destructive: oklch(0.65 0.2 25);
+  --color-destructive-foreground: oklch(0.985 0 0);
+  --color-warning: oklch(0.8 0.15 85);
+  --color-success: oklch(0.75 0.15 155);
+  --color-folder: oklch(0.85 0.12 85);
+  --modal-overlay: rgb(0 0 0 / 60%);
+}
+
+html[data-theme="light"] {
+  color-scheme: light;
+  --color-background: oklch(0.985 0 0);
+  --color-foreground: oklch(0.205 0 0);
+  --color-card: oklch(1 0 0);
+  --color-card-foreground: oklch(0.205 0 0);
+  --color-primary: oklch(0.52 0.14 165);
+  --color-primary-foreground: oklch(0.985 0 0);
+  --color-secondary: oklch(0.96 0.005 165);
+  --color-secondary-foreground: oklch(0.25 0 0);
+  --color-muted: oklch(0.96 0.005 165);
+  --color-muted-foreground: oklch(0.5 0 0);
+  --color-border: oklch(0.9 0.005 165);
+  --color-input: oklch(0.92 0.005 165);
+  --color-ring: oklch(0.52 0.14 165);
+  --widget-drag-shadow: rgb(15 23 42 / 12%);
+  --color-destructive: oklch(0.55 0.22 25);
+  --color-destructive-foreground: oklch(0.985 0 0);
+  --color-warning: oklch(0.62 0.17 75);
+  --color-success: oklch(0.52 0.14 155);
+  --color-folder: oklch(0.55 0.15 75);
+  --modal-overlay: rgb(15 23 42 / 35%);
+}
+
+html {
+  min-width: var(--app-min-width);
+  --widget-opacity: 1;
+}
+
+body {
+  margin: 0;
+  min-width: var(--app-min-width);
+  height: 100vh;
+  overflow-x: auto;
+  overflow-y: hidden;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+#root {
+  min-width: var(--app-min-width);
+  height: 100vh;
+}
+
+.app-shell {
+  position: relative;
+  min-width: var(--app-min-width);
+  height: 100vh;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.app-shell::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: var(--workspace-background-image);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: var(--workspace-background-opacity, 0);
+}
+
+.app-shell > * {
+  position: relative;
+  z-index: 1;
+}
+
+.workspace-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  height: var(--workspace-header-height);
+  min-width: var(--app-min-width);
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  margin-bottom: var(--workspace-header-margin-bottom);
+  background: color-mix(in oklch, var(--color-background) 88%, transparent);
+  backdrop-filter: blur(10px);
+  pointer-events: auto;
+}
+
+.app-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--color-muted-foreground);
+  user-select: none;
+}
+
+.app-brand-logo {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  object-fit: contain;
+  filter: brightness(0) saturate(100%) contrast(1.35);
+}
+
+html[data-theme="dark"] .app-brand-logo {
+  filter: brightness(0) saturate(100%) contrast(1.35) invert(1);
+}
+
+.app-brand-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.app-status,
+.app-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.workspace {
+  min-width: var(--app-min-width);
+  height: calc(
+    100vh - var(--workspace-header-height) - var(--workspace-header-margin-bottom)
+  );
+  overflow: auto;
+}
+
+.workspace-toast {
+  position: fixed;
+  top: calc(
+    var(--workspace-header-height) + var(--workspace-header-margin-bottom) + 8px
+  );
+  left: 50%;
+  z-index: 50;
+  translate: -50% 0;
+  background: color-mix(in oklch, var(--color-card) 92%, transparent);
+  padding: 6px 14px;
+  font-size: 12px;
+  backdrop-filter: blur(8px);
+}
+
+.grid-dashboard-host {
+  position: relative;
+  width: 100%;
+  min-height: 100%;
+  user-select: none;
+  --grid-step-x: 80px;
+  --grid-step-y: 52px;
+  --grid-col-width: 68px;
+  --grid-row-height: 40px;
+  background-color: var(--color-background);
+}
+
+html[data-has-background="true"] .grid-dashboard-host {
+  background-color: transparent;
+}
+
+.grid-dashboard-dots {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: radial-gradient(
+    circle,
+    color-mix(in oklch, var(--color-muted-foreground) 40%, transparent) 1px,
+    transparent 1px
+  );
+  background-size: var(--grid-step-x) var(--grid-step-y);
+  background-position: 0 0;
+}
+
+.grid-dashboard-host > .grid-dashboard-item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: color-mix(
+    in oklch,
+    var(--color-card) calc(var(--widget-opacity, 1) * 100%),
+    transparent
+  );
+  backdrop-filter: blur(calc((1 - var(--widget-opacity, 1)) * 12px));
+  border: 1px solid color-mix(in oklch, var(--color-border) 70%, transparent);
+  touch-action: none;
+  will-change: transform, width, height;
+}
+
+.grid-dashboard-item[data-dragging],
+.grid-dashboard-item[data-resizing] {
+  z-index: 100;
+  box-shadow: 0 12px 40px var(--widget-drag-shadow);
+}
+
+.widget-drag-handle {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0;
+  background: color-mix(
+    in oklch,
+    var(--color-secondary) calc(var(--widget-opacity, 1) * 85%),
+    transparent
+  );
+  border-bottom: 1px solid color-mix(in oklch, var(--color-border) 60%, transparent);
+}
+
+.widget-drag-grip {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: grab;
+  touch-action: none;
+}
+
+.widget-drag-grip:active {
+  cursor: grabbing;
+}
+
+.widget-drag-label {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-foreground);
+}
+
+.widget-drag-actions {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.widget-body {
+  min-height: 0;
+  flex: 1;
+  overflow: hidden;
+  user-select: text;
+}
+
+.terminal-widget-host {
+  background: transparent;
+}
+
+.terminal-theme-preview {
+  background: color-mix(
+    in oklch,
+    var(--color-card) calc(var(--widget-opacity, 1) * 100%),
+    transparent
+  );
+  backdrop-filter: blur(calc((1 - var(--widget-opacity, 1)) * 12px));
+}
+
+.terminal-widget-host .xterm,
+.terminal-widget-host .xterm .xterm-screen,
+.terminal-widget-host .xterm .xterm-viewport,
+.terminal-widget-host .xterm .xterm-rows,
+.terminal-widget-host .xterm canvas {
+  background-color: transparent !important;
+}
+
+.terminal-widget-host .xterm-rows span.xterm-bg-257 {
+  background-color: transparent !important;
+}
+
+.widget-resize-handle {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  width: 18px;
+  height: 18px;
+  cursor: nwse-resize;
+  touch-action: none;
+  background: linear-gradient(
+    135deg,
+    transparent 0 50%,
+    color-mix(in oklch, var(--color-primary) 70%, transparent) 50% 100%
+  );
+}
+
+.grid-dashboard-item:hover .widget-resize-handle {
+  background: linear-gradient(
+    135deg,
+    transparent 0 45%,
+    var(--color-primary) 45% 100%
+  );
+}
+
+.alert-destructive {
+  border-bottom: 1px solid
+    color-mix(in oklch, var(--color-destructive) 35%, transparent);
+  background: color-mix(
+    in oklch,
+    var(--color-destructive) 10%,
+    var(--color-card)
+  );
+  color: var(--color-destructive);
+}

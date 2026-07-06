@@ -1,0 +1,6 @@
+# Optional local overrides for `wrangler dev`.
+# Copy to `.dev.vars` to test auth locally.
+# ACCESS_TEAM_DOMAIN=your-team.cloudflareaccess.com
+# ACCESS_AUD=your-64-char-aud-tag
+# BASICAUTH_USERNAME=admin
+# BASICAUTH_PASSWORD=change-me

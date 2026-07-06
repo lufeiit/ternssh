@@ -1,0 +1,15 @@
+services:
+  ternssh:
+    image: ghcr.io/haradakashiwa/ternssh:${TERNSSH_TAG:-latest}
+    ports:
+      - "${PORT:-8787}:${PORT:-8787}"
+    environment:
+      PORT: "${PORT:-8787}"
+      BASICAUTH_USERNAME: "${BASICAUTH_USERNAME:-}"
+      BASICAUTH_PASSWORD: "${BASICAUTH_PASSWORD:-}"
+    volumes:
+      - ternssh-data:/app/.wrangler
+    restart: unless-stopped
+
+volumes:
+  ternssh-data:

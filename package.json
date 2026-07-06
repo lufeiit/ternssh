@@ -1,0 +1,39 @@
+{
+  "name": "ternssh",
+  "private": true,
+  "license": "GPL-3.0-or-later",
+  "scripts": {
+    "postinstall": "npm install --prefix web && npm install --prefix server",
+    "dev:server": "wrangler dev",
+    "dev:web": "npm run dev --prefix web",
+    "build": "npm run build --prefix web",
+    "postbuild": "node scripts/generate-production-config.mjs",
+    "deploy": "node scripts/generate-production-config.mjs --require && wrangler d1 migrations apply ternssh --remote --config wrangler.production.jsonc && wrangler deploy --config wrangler.production.jsonc",
+    "cf:deploy": "npm run deploy",
+    "release": "npm run build && npm run deploy",
+    "deploy:config": "cp wrangler.production.jsonc.example wrangler.production.jsonc",
+    "db:migrate": "node scripts/generate-production-config.mjs --require && wrangler d1 migrations apply ternssh --remote --config wrangler.production.jsonc",
+    "db:migrate:local": "wrangler d1 migrations apply ternssh --local",
+    "types": "wrangler types --config wrangler.jsonc --env-interface Env server/worker-configuration.d.ts",
+    "build:web": "npm run build --prefix web"
+  },
+  "cloudflare": {
+    "bindings": {
+      "ACCESS_TEAM_DOMAIN": {
+        "description": "Cloudflare Access team domain (e.g. your-team.cloudflareaccess.com). With ACCESS_AUD, enables JWT verification."
+      },
+      "ACCESS_AUD": {
+        "description": "Application Audience (AUD) tag from your Access app. With ACCESS_TEAM_DOMAIN, enables JWT verification."
+      },
+      "BASICAUTH_USERNAME": {
+        "description": "HTTP Basic Auth username. With BASICAUTH_PASSWORD, protects the app behind Basic Auth."
+      },
+      "BASICAUTH_PASSWORD": {
+        "description": "HTTP Basic Auth password. Store as a Secret in production."
+      }
+    }
+  },
+  "devDependencies": {
+    "wrangler": "^4.24.3"
+  }
+}
